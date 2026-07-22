@@ -28,13 +28,25 @@ fun AppNavigation(
             LoginScreen()
         }
         composable<Route.Dashboard> {
-            DashboardScreen()
+            DashboardScreen(
+                onNavigateToGiveFeedback = { revieweeId ->
+                    navController.navigate(Route.GiveFeedback(revieweeId))
+                },
+                onNavigateToFeedbackHistory = { userId ->
+                    navController.navigate(Route.FeedbackHistory(userId))
+                }
+            )
         }
         composable<Route.HRDashboard> {
-            HRDashboardScreen()
+            HRDashboardScreen(
+                onNavigateToFeedbackHistory = { userId ->
+                    navController.navigate(Route.FeedbackHistory(userId))
+                }
+            )
         }
-        composable<Route.FeedbackHistory> {
-            FeedbackHistoryScreen()
+        composable<Route.FeedbackHistory> { backStackEntry ->
+            val route = backStackEntry.toRoute<Route.FeedbackHistory>()
+            FeedbackHistoryScreen(userId = route.userId)
         }
         composable<Route.GiveFeedback> { backStackEntry ->
             val route = backStackEntry.toRoute<Route.GiveFeedback>()

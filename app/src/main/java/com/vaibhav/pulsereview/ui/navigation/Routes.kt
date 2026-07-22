@@ -17,7 +17,7 @@ sealed interface Route {
     data object HRDashboard : Route
 
     @Serializable
-    data object FeedbackHistory : Route
+    data class FeedbackHistory(val userId: String) : Route
 
     @Serializable
     data class GiveFeedback(val revieweeId: String) : Route

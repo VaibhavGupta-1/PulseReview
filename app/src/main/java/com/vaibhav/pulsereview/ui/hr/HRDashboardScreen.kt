@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import com.vaibhav.pulsereview.ui.components.AppTopBar
 
 @Composable
-fun HRDashboardScreen() {
+fun HRDashboardScreen(
+    onNavigateToFeedbackHistory: (userId: String) -> Unit = {},
+) {
     Scaffold(
         topBar = { AppTopBar(title = "HR Dashboard") }
     ) { innerPadding ->

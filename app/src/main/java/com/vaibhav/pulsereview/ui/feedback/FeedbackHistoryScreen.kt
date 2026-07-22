@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import com.vaibhav.pulsereview.ui.components.AppTopBar
 
 @Composable
-fun FeedbackHistoryScreen() {
+fun FeedbackHistoryScreen(userId: String) {
     Scaffold(
         topBar = { AppTopBar(title = "Feedback History") }
     ) { innerPadding ->
@@ -23,7 +23,7 @@ fun FeedbackHistoryScreen() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Feedback History",
+                text = "Feedback History for $userId",
                 style = MaterialTheme.typography.headlineMedium
             )
         }
