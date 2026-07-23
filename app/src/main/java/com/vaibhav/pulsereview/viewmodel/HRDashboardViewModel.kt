@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
  * NOTE: No DI framework is configured. Provide a ViewModelProvider.Factory
  * or DI module to inject dependencies at the call site.
  */
-class HRDashboardViewModel(
+class HRDashboardViewModel @JvmOverloads constructor(
     private val feedbackRepository: FeedbackRepository = FeedbackRepository()
 ) : ViewModel() {
 

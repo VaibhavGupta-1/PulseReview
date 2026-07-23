@@ -22,18 +22,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.vaibhav.pulsereview.core.common.UiState
 import com.vaibhav.pulsereview.data.model.ScoreHistory
+import com.vaibhav.pulsereview.data.repository.FeedbackRepository
 import com.vaibhav.pulsereview.ui.components.AppTopBar
 import com.vaibhav.pulsereview.ui.components.EmptyState
 import com.vaibhav.pulsereview.ui.components.LoadingIndicator
 import com.vaibhav.pulsereview.ui.components.PrimaryButton
 import com.vaibhav.pulsereview.viewmodel.FeedbackHistoryViewModel
+import com.vaibhav.pulsereview.viewmodel.FeedbackHistoryViewModelFactory
 
 @Composable
 fun FeedbackHistoryScreen(
     userId: String,
-    viewModel: FeedbackHistoryViewModel = viewModel()
+    repository: FeedbackRepository = remember { FeedbackRepository() },
+    viewModel: FeedbackHistoryViewModel = viewModel(
+        factory = FeedbackHistoryViewModelFactory(repository, userId)
+    )
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

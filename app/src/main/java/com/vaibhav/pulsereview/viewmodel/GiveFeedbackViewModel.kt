@@ -1,6 +1,5 @@
 package com.vaibhav.pulsereview.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vaibhav.pulsereview.core.common.UiState
@@ -21,19 +20,12 @@ data class GiveFeedbackUiData(
 
 /**
  * Loads the 5 feedback parameters on init and submits all scores as a
- * batch insert against the current open cycle.
- *
- * [revieweeId] is extracted from the navigation argument via SavedStateHandle.
- *
- * NOTE: No DI framework is configured. Provide a ViewModelProvider.Factory
- * or DI module to inject dependencies at the call site.
+ * batch insert against the current open cycle for the given [revieweeId].
  */
 class GiveFeedbackViewModel(
-    savedStateHandle: SavedStateHandle,
+    val revieweeId: String,
     private val feedbackRepository: FeedbackRepository = FeedbackRepository()
 ) : ViewModel() {
-
-    val revieweeId: String = checkNotNull(savedStateHandle["revieweeId"])
 
     private val _uiState =
         MutableStateFlow<UiState<GiveFeedbackUiData>>(UiState.Loading)

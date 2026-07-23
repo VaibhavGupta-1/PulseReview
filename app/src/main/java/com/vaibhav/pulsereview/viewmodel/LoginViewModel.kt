@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
  * NOTE: No DI framework is configured. Provide a ViewModelProvider.Factory
  * or DI module to inject dependencies at the call site.
  */
-class LoginViewModel(
+class LoginViewModel @JvmOverloads constructor(
     private val userRepository: UserRepository = UserRepository()
 ) : ViewModel() {
 

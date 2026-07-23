@@ -29,17 +29,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vaibhav.pulsereview.core.common.UiState
+import com.vaibhav.pulsereview.data.repository.FeedbackRepository
 import com.vaibhav.pulsereview.ui.components.AppTopBar
 import com.vaibhav.pulsereview.ui.components.LoadingIndicator
 import com.vaibhav.pulsereview.ui.components.PrimaryButton
 import com.vaibhav.pulsereview.viewmodel.GiveFeedbackUiData
 import com.vaibhav.pulsereview.viewmodel.GiveFeedbackViewModel
+import com.vaibhav.pulsereview.viewmodel.GiveFeedbackViewModelFactory
 
 @Composable
 fun GiveFeedbackScreen(
     revieweeId: String,
     onSubmitSuccess: () -> Unit = {},
-    viewModel: GiveFeedbackViewModel = viewModel()
+    repository: FeedbackRepository = remember { FeedbackRepository() },
+    viewModel: GiveFeedbackViewModel = viewModel(
+        factory = GiveFeedbackViewModelFactory(repository, revieweeId)
+    )
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
