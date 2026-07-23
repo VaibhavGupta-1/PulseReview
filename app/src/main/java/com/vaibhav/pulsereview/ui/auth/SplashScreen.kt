@@ -7,11 +7,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(onNavigateNext: () -> Unit = {}) {
+    LaunchedEffect(Unit) {
+        delay(1500)
+        onNavigateNext()
+    }
+
     Scaffold { innerPadding ->
         Box(
             modifier = Modifier
@@ -21,7 +28,8 @@ fun SplashScreen() {
         ) {
             Text(
                 text = "PulseReview",
-                style = MaterialTheme.typography.headlineLarge
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

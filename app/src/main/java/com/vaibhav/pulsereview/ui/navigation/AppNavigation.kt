@@ -22,7 +22,13 @@ fun AppNavigation(
         startDestination = Route.Splash
     ) {
         composable<Route.Splash> {
-            SplashScreen()
+            SplashScreen(
+                onNavigateNext = {
+                    navController.navigate(Route.Login) {
+                        popUpTo(Route.Splash) { inclusive = true }
+                    }
+                }
+            )
         }
         composable<Route.Login> {
             LoginScreen(
