@@ -6,6 +6,7 @@ import com.vaibhav.pulsereview.core.common.UiState
 import com.vaibhav.pulsereview.core.session.SessionManager
 import com.vaibhav.pulsereview.data.model.FeedbackEntry
 import com.vaibhav.pulsereview.data.model.FeedbackParameter
+import com.vaibhav.pulsereview.data.model.ScoreHistory
 import com.vaibhav.pulsereview.data.repository.FeedbackRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,11 +16,14 @@ import kotlinx.coroutines.launch
 /** UI-facing state combining parameters (for the form) and submission status. */
 data class GiveFeedbackUiData(
     val parameters: List<FeedbackParameter>,
-    val submitted: Boolean = false
+    val submitted: Boolean = false,
+    val alreadySubmitted: Boolean = false,
+    val existingScores: List<ScoreHistory> = emptyList()
 )
 
 /**
- * Loads the 5 feedback parameters on init and submits all scores as a
+ * Loads the 5 feedback parameters on init (or displays already-submitted scores
+ * if feedback was already provided for this cycle) and submits all scores as a
  * batch insert against the current open cycle for the given [revieweeId].
  */
 class GiveFeedbackViewModel(
@@ -39,10 +43,48 @@ class GiveFeedbackViewModel(
         viewModelScope.launch {
             _uiState.value = UiState.Loading
 
+            val session = SessionManager.currentSession.value
+            if (session != null) {
+                val cyclesResult = feedbackRepository.getOpenCycles(session.companyId)
+                if (cyclesResult is UiState.Success) {
+                    val openCycle = cyclesResult.data.firstOrNull()
+                    if (openCycle != null) {
+                        // Check if reviewer has already submitted feedback for this reviewee in the current cycle
+                        val statusResult = feedbackRepository.getSubmissionStatusByReviewer(session.userId)
+                        if (statusResult is UiState.Success) {
+                            val existingStatus = statusResult.data.firstOrNull {
+                                it.cycleId == openCycle.id && it.revieweeId == revieweeId
+                            }
+                            if (existingStatus != null && (existingStatus.isComplete || existingStatus.entriesSubmitted > 0)) {
+                                // Already submitted for this cycle! Fetch score history to display read-only view
+                                when (val historyResult = feedbackRepository.getScoreHistory(revieweeId)) {
+                                    is UiState.Success -> {
+                                        val currentCycleHistory = historyResult.data.filter { it.period == openCycle.period }
+                                        _uiState.value = UiState.Success(
+                                            GiveFeedbackUiData(
+                                                parameters = emptyList(),
+                                                alreadySubmitted = true,
+                                                existingScores = currentCycleHistory
+                                            )
+                                        )
+                                        return@launch
+                                    }
+                                    else -> Unit
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Otherwise, load feedback parameters for the editable form
             when (val result = feedbackRepository.getFeedbackParameters()) {
                 is UiState.Success -> {
                     _uiState.value = UiState.Success(
-                        GiveFeedbackUiData(parameters = result.data)
+                        GiveFeedbackUiData(
+                            parameters = result.data,
+                            alreadySubmitted = false
+                        )
                     )
                 }
                 is UiState.Error -> _uiState.value = UiState.Error(result.message)
