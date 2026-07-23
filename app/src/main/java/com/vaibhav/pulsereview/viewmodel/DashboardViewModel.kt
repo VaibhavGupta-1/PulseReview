@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vaibhav.pulsereview.core.common.UiState
 import com.vaibhav.pulsereview.core.session.SessionManager
-import com.vaibhav.pulsereview.data.model.ReportingRelationship
+import com.vaibhav.pulsereview.data.model.ReportingRelationshipWithNames
 import com.vaibhav.pulsereview.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +24,8 @@ class DashboardViewModel(
 ) : ViewModel() {
 
     private val _uiState =
-        MutableStateFlow<UiState<List<ReportingRelationship>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<ReportingRelationship>>> = _uiState.asStateFlow()
+        MutableStateFlow<UiState<List<ReportingRelationshipWithNames>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ReportingRelationshipWithNames>>> = _uiState.asStateFlow()
 
     init {
         loadDirectReports()

@@ -3,6 +3,7 @@ package com.vaibhav.pulsereview.data.remote
 import com.vaibhav.pulsereview.core.network.SupabaseManager
 import com.vaibhav.pulsereview.data.model.HrUser
 import com.vaibhav.pulsereview.data.model.ReportingRelationship
+import com.vaibhav.pulsereview.data.model.ReportingRelationshipWithNames
 import com.vaibhav.pulsereview.data.model.User
 import io.github.jan.supabase.postgrest.from
 
@@ -18,13 +19,13 @@ class UserRemoteDataSource {
     }
 
     /**
-     * Fetch reporting_relationships where manager_id matches the given
-     * userId — returns the manager's list of direct reports.
+     * Fetch v_reporting_relationships_with_names where manager_id matches the given
+     * userId — returns the manager's list of direct reports with names.
      */
-    suspend fun fetchDirectReports(managerId: String): List<ReportingRelationship> {
-        return client.from("reporting_relationships").select {
+    suspend fun fetchDirectReports(managerId: String): List<ReportingRelationshipWithNames> {
+        return client.from("v_reporting_relationships_with_names").select {
             filter { eq("manager_id", managerId) }
-        }.decodeList<ReportingRelationship>()
+        }.decodeList<ReportingRelationshipWithNames>()
     }
 
     /**

@@ -92,7 +92,7 @@ fun DashboardScreen(
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
-                                    text = relationship.employeeId,
+                                    text = relationship.employeeName,
                                     style = MaterialTheme.typography.bodyLarge
                                 )
                                 Text(

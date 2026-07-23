@@ -3,6 +3,7 @@ package com.vaibhav.pulsereview.data.repository
 import com.vaibhav.pulsereview.core.common.UiState
 import com.vaibhav.pulsereview.data.model.HrUser
 import com.vaibhav.pulsereview.data.model.ReportingRelationship
+import com.vaibhav.pulsereview.data.model.ReportingRelationshipWithNames
 import com.vaibhav.pulsereview.data.model.User
 import com.vaibhav.pulsereview.data.remote.UserRemoteDataSource
 
@@ -14,7 +15,7 @@ class UserRepository(
         return safeApiCall { remoteDataSource.fetchUserById(userId) }
     }
 
-    suspend fun getDirectReports(managerId: String): UiState<List<ReportingRelationship>> {
+    suspend fun getDirectReports(managerId: String): UiState<List<ReportingRelationshipWithNames>> {
         return safeApiCallList { remoteDataSource.fetchDirectReports(managerId) }
     }
 
