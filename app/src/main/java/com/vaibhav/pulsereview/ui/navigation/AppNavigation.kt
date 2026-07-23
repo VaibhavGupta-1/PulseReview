@@ -25,7 +25,13 @@ fun AppNavigation(
             SplashScreen()
         }
         composable<Route.Login> {
-            LoginScreen()
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Route.Dashboard) {
+                        popUpTo<Route.Login> { inclusive = true }
+                    }
+                }
+            )
         }
         composable<Route.Dashboard> {
             DashboardScreen(
@@ -50,7 +56,12 @@ fun AppNavigation(
         }
         composable<Route.GiveFeedback> { backStackEntry ->
             val route = backStackEntry.toRoute<Route.GiveFeedback>()
-            GiveFeedbackScreen(revieweeId = route.revieweeId)
+            GiveFeedbackScreen(
+                revieweeId = route.revieweeId,
+                onSubmitSuccess = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
