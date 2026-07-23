@@ -6,6 +6,7 @@ import com.vaibhav.pulsereview.data.model.FeedbackEntry
 import com.vaibhav.pulsereview.data.model.FeedbackParameter
 import com.vaibhav.pulsereview.data.model.ScoreHistory
 import com.vaibhav.pulsereview.data.model.SubmissionStatus
+import com.vaibhav.pulsereview.data.model.SubmissionStatusWithNames
 import io.github.jan.supabase.postgrest.from
 
 class FeedbackRemoteDataSource {
@@ -43,6 +44,13 @@ class FeedbackRemoteDataSource {
         return client.from("v_submission_status").select {
             filter { eq("company_id", companyId) }
         }.decodeList<SubmissionStatus>()
+    }
+
+    /** Fetch submission status with reviewer and reviewee names for an entire company (HR dashboard). */
+    suspend fun fetchSubmissionStatusByCompanyWithNames(companyId: String): List<SubmissionStatusWithNames> {
+        return client.from("v_submission_status_with_names").select {
+            filter { eq("company_id", companyId) }
+        }.decodeList<SubmissionStatusWithNames>()
     }
 
     /** Fetch submission status for a specific reviewer (manager's own view). */

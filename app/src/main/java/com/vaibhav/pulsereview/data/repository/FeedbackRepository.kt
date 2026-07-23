@@ -6,6 +6,7 @@ import com.vaibhav.pulsereview.data.model.FeedbackEntry
 import com.vaibhav.pulsereview.data.model.FeedbackParameter
 import com.vaibhav.pulsereview.data.model.ScoreHistory
 import com.vaibhav.pulsereview.data.model.SubmissionStatus
+import com.vaibhav.pulsereview.data.model.SubmissionStatusWithNames
 import com.vaibhav.pulsereview.data.remote.FeedbackRemoteDataSource
 
 class FeedbackRepository(
@@ -30,6 +31,10 @@ class FeedbackRepository(
 
     suspend fun getSubmissionStatusByCompany(companyId: String): UiState<List<SubmissionStatus>> {
         return safeApiCallList { remoteDataSource.fetchSubmissionStatusByCompany(companyId) }
+    }
+
+    suspend fun getSubmissionStatusByCompanyWithNames(companyId: String): UiState<List<SubmissionStatusWithNames>> {
+        return safeApiCallList { remoteDataSource.fetchSubmissionStatusByCompanyWithNames(companyId) }
     }
 
     suspend fun getSubmissionStatusByReviewer(reviewerId: String): UiState<List<SubmissionStatus>> {

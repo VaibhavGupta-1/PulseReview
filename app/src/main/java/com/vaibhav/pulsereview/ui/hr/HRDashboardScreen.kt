@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vaibhav.pulsereview.core.common.UiState
-import com.vaibhav.pulsereview.data.model.SubmissionStatus
+import com.vaibhav.pulsereview.data.model.SubmissionStatusWithNames
 import com.vaibhav.pulsereview.ui.components.AppTopBar
 import com.vaibhav.pulsereview.ui.components.EmptyState
 import com.vaibhav.pulsereview.ui.components.LoadingIndicator
@@ -111,7 +111,7 @@ fun HRDashboardScreen(
 
 @Composable
 private fun SubmissionStatusCard(
-    status: SubmissionStatus,
+    status: SubmissionStatusWithNames,
     onClick: () -> Unit
 ) {
     Card(
@@ -128,11 +128,11 @@ private fun SubmissionStatusCard(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Reviewer: ${status.reviewerId.take(8)}…",
+                        text = "Reviewer: ${status.reviewerName}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(
-                        text = "Reviewee: ${status.revieweeId.take(8)}…",
+                        text = "Reviewee: ${status.revieweeName}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(

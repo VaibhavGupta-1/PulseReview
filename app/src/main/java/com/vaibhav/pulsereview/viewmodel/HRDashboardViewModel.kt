@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vaibhav.pulsereview.core.common.UiState
 import com.vaibhav.pulsereview.core.session.SessionManager
-import com.vaibhav.pulsereview.data.model.SubmissionStatus
+import com.vaibhav.pulsereview.data.model.SubmissionStatusWithNames
 import com.vaibhav.pulsereview.data.repository.FeedbackRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,19 +12,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Fetches v_submission_status for the current user's company on init.
+ * Fetches v_submission_status_with_names for the current user's company on init.
  * Emits Empty if no reporting relationships exist for the company yet.
- *
- * NOTE: No DI framework is configured. Provide a ViewModelProvider.Factory
- * or DI module to inject dependencies at the call site.
  */
 class HRDashboardViewModel @JvmOverloads constructor(
     private val feedbackRepository: FeedbackRepository = FeedbackRepository()
 ) : ViewModel() {
 
     private val _uiState =
-        MutableStateFlow<UiState<List<SubmissionStatus>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<SubmissionStatus>>> = _uiState.asStateFlow()
+        MutableStateFlow<UiState<List<SubmissionStatusWithNames>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<SubmissionStatusWithNames>>> = _uiState.asStateFlow()
 
     init {
         loadSubmissionStatus()
@@ -41,7 +38,7 @@ class HRDashboardViewModel @JvmOverloads constructor(
             }
 
             _uiState.value =
-                feedbackRepository.getSubmissionStatusByCompany(session.companyId)
+                feedbackRepository.getSubmissionStatusByCompanyWithNames(session.companyId)
         }
     }
 
