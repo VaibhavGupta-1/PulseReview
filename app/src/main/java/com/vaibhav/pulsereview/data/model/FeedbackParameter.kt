@@ -1,11 +1,10 @@
 package com.vaibhav.pulsereview.data.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Company(
+data class FeedbackParameter(
     val id: String? = null,
     val name: String,
-    @SerialName("created_at") val createdAt: String? = null
+    val description: String? = null
 )

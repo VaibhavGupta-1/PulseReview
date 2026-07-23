@@ -4,10 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(
-    val id: String,
+data class HrUser(
+    val id: String? = null,
     @SerialName("company_id") val companyId: String,
-    val name: String,
-    val email: String,
-    @SerialName("created_at") val createdAt: String? = null
+    @SerialName("user_id") val userId: String
 )
