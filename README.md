@@ -118,3 +118,10 @@ Reporting relationships are modeled as dedicated graph edges in a `reporting_rel
 
 4. **Build & Run:**
    Run `./gradlew assembleDebug` or launch the application on an emulator or connected device.
+
+---
+
+## Download
+
+📱 [Download APK](https://drive.google.com/file/d/1ctMjAncdgJMxPRwVDvgmeDh73-JXx2Ln/view?usp=drive_link)
+
